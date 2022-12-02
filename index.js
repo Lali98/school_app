@@ -146,7 +146,7 @@ app.put('/api/student/:id', bodyParser.json(), (req, res) => {
 
 // POST /api/osztalyzat/:id
 app.post('/api/osztalyzat/:id', bodyParser.json(), (req, res) => {
-    const newOsztalyzat = req.body;
+    const newOsztalyzat = [...req.body];
 
     const id = getId(req.params.id);
 
@@ -160,7 +160,7 @@ app.post('/api/osztalyzat/:id', bodyParser.json(), (req, res) => {
         const collection = client.db("school_app").collection("students");
         // perform actions on the collection object
 
-        const result = await collection.findOneAndUpdate({_id: id}, {$push: {osztalyzat: newOsztalyzat}}, {returnDocument: "after"});
+        const result = await collection.findOneAndUpdate({_id: id}, {$set: {osztalyzat: newOsztalyzat}}, {returnDocument: "after"});
 
         if (!result) {
             res.send({error: "Not found"});
